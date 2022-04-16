@@ -4,6 +4,7 @@ package com.example.eclipse.spring5mvcmongoreact.api.model;
 
 
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -12,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by jt on 9/27/17.
+ * 
  */
 @Document
 public class Customer {
@@ -68,6 +69,24 @@ public class Customer {
 
 	public void setCustomerUrl(String customerUrl) {
 		this.customerUrl = customerUrl;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstname, id, lastname);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		return Objects.equals(firstname, other.firstname) && Objects.equals(id, other.id)
+				&& Objects.equals(lastname, other.lastname);
 	}
 
 

@@ -1,5 +1,6 @@
 package com.example.eclipse.spring5mvcmongoreact.controllers;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
@@ -11,6 +12,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import com.example.eclipse.spring5mvcmongoreact.api.model.Customer;
 import com.example.eclipse.spring5mvcmongoreact.api.repositories.CustomerReactiveRepository;
@@ -25,9 +29,9 @@ class CustomerControllerReactiveTest {
 
 	@Mock
 	CustomerReactiveRepository customerReactiveRepository;
-	
+
 	CustomerService customerService;
-	
+
 	CustomerControllerReactive customerController;
 	
 	 WebTestClient webTestClient;
@@ -37,6 +41,7 @@ class CustomerControllerReactiveTest {
      
 		customerReactiveRepository= Mockito.mock(CustomerReactiveRepository.class);
 		
+
 		customerService  = new CustomerServiceImpl(customerReactiveRepository); 
 		customerController = new CustomerControllerReactive(customerService);
 		
@@ -45,7 +50,7 @@ class CustomerControllerReactiveTest {
 
     @Test
     public void list() {
-        given(customerService.getAllCustomers())
+        given(customerReactiveRepository.findAll())
                 .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
                 		new Customer(2L,"Custom2","Lastname2")));
 
@@ -55,4 +60,24 @@ class CustomerControllerReactiveTest {
                 .expectBodyList(Customer.class)
                 .hasSize(2);
     }
+    
+    
+    @Test
+    public void saveAll() {
+    	
+    	Publisher<Customer> pubToSave= Flux.just(new Customer(1L,"Custom1","Lastname1"),
+        		new Customer(2L,"Custom2","Lastname2"));    	
+        given(customerReactiveRepository.saveAll(any(Publisher.class)))
+                .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
+                		new Customer(2L,"Custom2","Lastname2")));
+
+        webTestClient.post()
+                .uri("/api/v2/customers/")
+                .body(pubToSave, Customer.class)
+                .exchange()               
+                .expectBodyList(Customer.class)
+                .contains(new Customer(1L,"Custom1","Lastname1"),
+        		new Customer(2L,"Custom2","Lastname2"));
+    }
+    
 }

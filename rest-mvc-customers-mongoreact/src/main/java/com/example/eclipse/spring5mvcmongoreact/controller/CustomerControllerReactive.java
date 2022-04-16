@@ -37,8 +37,8 @@ public class CustomerControllerReactive {
 	 
 	 @ResponseStatus(HttpStatus.CREATED)
 	    @PostMapping("/api/v2/customers")
-	    Mono<Void> create(@RequestBody Publisher<Customer> categoryStream){
-	        return customerService.saveAllCustomers(categoryStream).then();
+	    Flux<Customer> create(@RequestBody Publisher<Customer> categoryStream){
+	        return customerService.saveAllCustomers(categoryStream);
 	    }
 
 	    @PutMapping("/api/v2/customers/{id}")
