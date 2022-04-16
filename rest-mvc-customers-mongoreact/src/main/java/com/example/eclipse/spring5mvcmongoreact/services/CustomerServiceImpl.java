@@ -1,5 +1,6 @@
 package com.example.eclipse.spring5mvcmongoreact.services;
 
+import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Service;
 
 import com.example.eclipse.spring5mvcmongoreact.api.model.Customer;
@@ -90,6 +91,15 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setCustomerUrl(getCustomerUrl(customer.getId()));
 
 		return customerRepository.save(customer);
+
+		
+	}
+	
+	
+	@Override
+	public Flux<Customer> saveAllCustomers(Publisher<Customer> customerStream) {
+		
+		return customerRepository.saveAll(customerStream);
 
 		
 	}

@@ -6,6 +6,8 @@ package com.example.eclipse.spring5mvcmongoreact.services;
 
 import java.util.List;
 
+import org.reactivestreams.Publisher;
+
 import com.example.eclipse.spring5mvcmongoreact.api.model.Customer;
 
 import reactor.core.publisher.Flux;
@@ -25,7 +27,7 @@ public interface CustomerService {
     Mono<Customer> getCustomerById(Long id);
 
     Mono<Customer> createNewCustomer(Customer customer);
-
+	Flux<Customer> saveAllCustomers(Publisher<Customer> customerStream);
     Mono<Customer> saveCustomer(Long id, Customer customer);
 
     Mono<Customer> patchCustomer(Long id, Customer customer);
