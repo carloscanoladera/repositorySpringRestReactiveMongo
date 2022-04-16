@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -79,5 +80,23 @@ class CustomerControllerReactiveTest {
                 .contains(new Customer(1L,"Custom1","Lastname1"),
         		new Customer(2L,"Custom2","Lastname2"));
     }
+    
+    @Test
+    public void deleteById() {
+    	
+    	
+    	 given(customerReactiveRepository.deleteById(any(Long.class)))
+         .willReturn(Mono.empty() );
+
+     	
+     	
+     	 webTestClient.delete()
+          .uri("/api/v2/customers/1")        
+          .exchange()
+          .expectStatus()
+          .isOk();
+    	
+    }
+    
     
 }

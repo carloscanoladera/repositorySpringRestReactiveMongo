@@ -2,6 +2,7 @@ package com.example.eclipse.spring5mvcmongoreact.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,13 @@ public class CustomerControllerReactive {
 	    Mono<Customer> patch(@PathVariable String id, @RequestBody Customer customer) {
 
 	       return customerService.patchCustomer(Long.valueOf(id), customer);
+	     
+	    }
+	    
+	    @DeleteMapping("/api/v2/customers/{id}")
+	    Mono<Void> delete(@PathVariable String id) {
+
+	       return customerService.deleteCustomerById(Long.valueOf(id));
 	     
 	    }
 	 

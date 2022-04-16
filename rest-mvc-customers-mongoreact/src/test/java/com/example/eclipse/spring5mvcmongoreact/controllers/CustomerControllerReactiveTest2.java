@@ -1,6 +1,7 @@
 package com.example.eclipse.spring5mvcmongoreact.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,5 +50,40 @@ class CustomerControllerReactiveTest2 {
         .exchange()
         .expectBodyList(Customer.class)
         .hasSize(2);
+    }
+    
+    
+    @Test
+    public void saveAll() {
+    	
+    	Publisher<Customer> pubToSave= Flux.just(new Customer(1L,"Custom1","Lastname1"),
+        		new Customer(2L,"Custom2","Lastname2"));    	
+        given(customerService.saveAllCustomers(any(Publisher.class)))
+                .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
+                		new Customer(2L,"Custom2","Lastname2")));
+
+        webTestClient.post()
+                .uri("/api/v2/customers/")
+                .body(pubToSave, Customer.class)
+                .exchange()               
+                .expectBodyList(Customer.class)
+                .contains(new Customer(1L,"Custom1","Lastname1"),
+        		new Customer(2L,"Custom2","Lastname2"));
+    }
+    
+    @Test
+    public void deleteById() {
+    	
+        given(customerService.deleteCustomerById(any()))
+        .willReturn(Mono.empty() );
+
+    	
+    	
+    	 webTestClient.delete()
+         .uri("/api/v2/customers/1")        
+         .exchange()
+         .expectStatus()
+         .isOk();
+    	
     }
 }
