@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -51,7 +52,7 @@ class CustomerControllerReactiveTest {
 
     @Test
     public void list() {
-        given(customerReactiveRepository.findAll())
+    	BDDMockito.given(customerReactiveRepository.findAll())
                 .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
                 		new Customer(2L,"Custom2","Lastname2")));
 
@@ -68,7 +69,7 @@ class CustomerControllerReactiveTest {
     	
     	Publisher<Customer> pubToSave= Flux.just(new Customer(1L,"Custom1","Lastname1"),
         		new Customer(2L,"Custom2","Lastname2"));    	
-        given(customerReactiveRepository.saveAll(any(Publisher.class)))
+    	BDDMockito.given(customerReactiveRepository.saveAll(any(Publisher.class)))
                 .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
                 		new Customer(2L,"Custom2","Lastname2")));
 
@@ -85,7 +86,7 @@ class CustomerControllerReactiveTest {
     public void deleteById() {
     	
     	
-    	 given(customerReactiveRepository.deleteById(any(Long.class)))
+    	BDDMockito.given(customerReactiveRepository.deleteById(any(Long.class)))
          .willReturn(Mono.empty() );
 
      	

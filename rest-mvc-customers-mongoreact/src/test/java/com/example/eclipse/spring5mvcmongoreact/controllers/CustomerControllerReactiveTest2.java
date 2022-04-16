@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -41,7 +42,7 @@ class CustomerControllerReactiveTest2 {
 
     @Test
     public void list() {
-        given(customerService.getAllCustomersWithInterval())
+    	given(customerService.getAllCustomersWithInterval())
                 .willReturn(Flux.just(new Customer(1L,"Custom1","Lastname1"),
                 		new Customer(2L,"Custom2","Lastname2")));
 
